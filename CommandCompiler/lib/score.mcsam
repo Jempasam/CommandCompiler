@@ -1,0 +1,19 @@
+macro set(entity,name,score){
+	scoreboard players set %%entity %%name %%score;
+}
+
+macro add(entity,name,score){
+	scoreboard players add %%entity %%name %%score;
+}
+
+macro increment(entity,name){
+	scoreboard players add %%entity %%name 1;
+}
+
+macro decrement(entity,name){
+	scoreboard players remove %%entity %%name 1;
+}
+
+macro sub(entity,name,score){
+	scoreboard players remove %%entity %%name %%score;
+}

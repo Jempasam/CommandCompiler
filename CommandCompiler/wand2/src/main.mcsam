@@ -1,0 +1,4 @@
+import treat_magic;
+import give_stuff;
+import stands;
+import objects;

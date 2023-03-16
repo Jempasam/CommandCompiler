@@ -1,0 +1,4 @@
+import animal;
+
+macro summonDog(): %%summon(minecraft:wolf;,Chien;,PersistenceRequired:1b;);
+macro summonWolf(): %%summon(minecraft:wolf;,Wolf;);

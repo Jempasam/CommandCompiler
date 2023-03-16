@@ -1,0 +1,10 @@
+import chat;
+
+define main(
+	kill @s;
+	%%summon(minecraft:zombie;);
+	%%summon(minecraft:zombie;,Jean;);
+	%%summon(minecraft:creeper;,Pierre;,PersistenceRequired:1;);
+	%%summonDog;
+	%%summonWolf;
+)

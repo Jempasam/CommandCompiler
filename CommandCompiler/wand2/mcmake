@@ -1,0 +1,12 @@
+src/give_stuff:
+   src/weapon
+src/weapon:
+   src/standard
+src/standard:
+src/objects:
+   src/standard
+src/treat_magic:
+src/main:
+   src/treat_magic src/give_stuff
+src/stands:
+   src/standard

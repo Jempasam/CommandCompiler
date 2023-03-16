@@ -1,0 +1,39 @@
+namespace data{
+	# DATA STORAGE #
+	macro var(name){ storage %%namespace:temp %%name }
+	macro stacklast(name)
+	macro storage(storagename,name){ storage %%namespace:%%storagename %%name }
+	macro entity(selector,name){ entity %%selector %%name }
+	macro actual(name){ entity @s %%name }
+	macro block(pos,name){ entity %%selector %%name }
+
+	# ACTION #
+	macro set(datastorage,value): data modify %%datastorage set value %%value;  
+	macro append(datastorage,value): data modify %%datastorage append value %%value;
+	macro prepend(datastorage,value): data modify %%datastorage prepend value %%value;
+	macro insert(datastorage,index,value): data modify %%datastorage insert %%index value %%value;
+
+	macro setFrom(datastorage,datasource): data modify %%datastorage set from %%datasource;  
+	macro appendFrom(datastorage,datasource): data modify %%datastorage append from %%datasource;
+	macro prependFrom(datastorage,datasource): data modify %%datastorage prepend from %%datasource;
+	macro insertFrom(datastorage,index,datasource): data modify %%datastorage insert %%index from %%datasource;
+
+	macro storeIn(datastorage){ execute store result %%datastorage int 1 run }
+	macro storeIn(datastorage,type,multiplier){ execute store result %%datastorage %%type %%multiplier run }
+
+	macro get(datastorage): data get %%datastorage 1;
+	macro get(datastorage,multiplier): data get %%datastorage %%multiplier;
+
+	macro remove(datastorage): data remove %%datastorage;
+	
+	# CONDITIONNAL #
+	macro exist(datastorage){ data %%datastorage }
+
+	# COMPLEXES #
+	macro log(target,datastorage){
+		const name{ %%rand }
+		const temp{ %%var(%%name) }
+		%%setFrom(%%temp,%%datastorage);
+		tellraw %%target {"storage":"%%namespace:temp","nbt":"%%name"};
+		%%remove(%%temp);
+	}

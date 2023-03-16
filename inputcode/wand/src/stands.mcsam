@@ -1,0 +1,11 @@
+import standard;
+
+define give_stands{
+	macro stand(model,name,color): %%item(minecraft:netherite_sword, %%model, %%name, %%color);
+	%%stand(260401, Shining Mining, aqua);
+	%%stand(260402, Black Sabbath, white);
+	%%stand(260403, Robot Ribbit, red);
+	%%stand(260404, Flying Angel, yellow);
+	%%stand(260405, Golden Target, gold);
+	%%stand(260406, Green Racer, green);
+}

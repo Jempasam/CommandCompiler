@@ -1,0 +1,12 @@
+execute if block ~-1 ~ ~ minecraft:dirt run fill ~-3 ~ ~ ~ ~ ~ minecraft:oak_wood keep
+execute if block ~ ~ ~-1 minecraft:dirt run fill ~ ~ ~ ~ ~ ~-3 minecraft:oak_wood keep
+execute if block ~ ~-1 ~ minecraft:dirt run fill ~ ~ ~ ~ ~-3 ~ minecraft:oak_wood keep
+execute if block ~-1 ~ ~ minecraft:oak_logs run fill ~-3 ~ ~ ~ ~ ~ minecraft:oak_leaves keep
+execute if block ~ ~ ~-1 minecraft:oak_logs run fill ~ ~ ~ ~ ~ ~-3 minecraft:oak_leaves keep
+execute if block ~ ~-1 ~ minecraft:oak_logs run fill ~ ~ ~ ~ ~-3 ~ minecraft:oak_leaves keep
+execute if block ~-1 ~ ~ minecraft:oak_leaves run fill ~ ~ ~ ~3 ~ ~ minecraft:birch_leaves keep
+execute if block ~1 ~ ~ minecraft:oak_leaves run fill ~-3 ~ ~ ~ ~ ~ minecraft:birch_leaves keep
+execute if block ~ ~ ~-1 minecraft:oak_leaves run fill ~ ~ ~ ~ ~ ~3 minecraft:birch_leaves keep
+execute if block ~ ~ ~1 minecraft:oak_leaves run fill ~ ~ ~ ~ ~ ~-3 minecraft:birch_leaves keep
+execute if block ~ ~-1 ~ minecraft:oak_leaves run fill ~ ~ ~ ~ ~3 ~ minecraft:birch_leaves keep
+execute if block ~ ~1 ~ minecraft:oak_leaves run fill ~ ~ ~ ~ ~-3 ~ minecraft:birch_leaves keep

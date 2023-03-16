@@ -1,0 +1,238 @@
+import weapon;
+use effect;
+
+# DEFAULT ATTACK SPEED = 4.0 #
+# DEFAULT ATTACK DAMAGE = 0.5 #
+
+define give_weapons{
+		
+	# IRON #
+	%%weapon(minecraft:iron_sword,	1,		Lance de fer,		4,3.5,		2,-2, 		+20%,0.2 );
+	%%weapon(minecraft:iron_sword,	2,		Grande épée de fer,	10,9.5,		0.8,-3.2,	-20%,0.2 );
+	%%weapon(minecraft:iron_sword,	4,		Dague de fer, 		1.5,1.0,	3.5,-0.5,	+40%,0.2 );
+	%%weapon(minecraft:iron_sword,	5,		Cimeterre de fer,	7,6.5,		1.6,-2.4 );
+	%%weapon(minecraft:iron_sword,	6,		Sabre de fer, 		6,5.5,		1.9,-2.1 );
+	%%weapon(minecraft:iron_axe,	1,		Marteau de fer,		12,11.5,	0.5,-3.5 );
+	%%weapon(minecraft:iron_hoe,	1,		Rateau de fer,		2.5,2,		2,-2 );
+
+	# BOIS #
+	%%weaponEnchanted(minecraft:wooden_sword, 1,Torche de combat,	3,2.5,	1.6,-2.4,	minecraft:fire_aspect,2s);
+	%%weaponEnchanted(minecraft:wooden_sword, 2,Batte de combat,	3.5,3,	1.4,-2.6,	minecraft:knockback,3s);
+
+	# PIERRE #
+	%%weapon(minecraft:stone_axe, 		1,	Masse de pierre,	11,10.5,	0.6,-3.4);
+
+	# DIAMOND #
+	%%weapon(minecraft:diamond_sword,	1,	Rateau de diamant,	5.5,5,		2,-2,	+20%,0.2);
+
+	# OR #
+	%%weaponEnchanted(minecraft:golden_sword,	1,	Croix sacrée,	3.5,3,	1.4,-2.6,	minecraft:smite,2s);
+
+	# AUTRES #
+	give @s minecraft:leather_boots{
+		CustomModelData:1, display:{color:11291945,Name:%%text(Bottes de cuivre)},
+		AttributeModifiers:[
+			%%attribute(feet_mspeed, generic.movement_speed, %%attr/multiplyBase, -0.3, feet),
+			%%attribute(feet_kres, generic.knockback_resistance, %%attr/multiplyBase, 2, feet)
+		]
+	};
+	
+	give @s minecraft:crossbow{
+		CustomModelData:260401, display:{Name:%%text(Pistolet)}
+	};
+}
+
+define give_crystals{
+	macro crystal(model,name,color): %%item(minecraft:heart_of_the_sea, %%model, %%name, %%color); 
+	macro colorableCrystal(model): %%item(minecraft:leather_horse_armor, %%model, Crystal Neutre, white); 
+	
+	%%crystal(1, Crystal de vent, aqua);
+	%%crystal(2, Crystal des ténèbres, white);
+	%%crystal(3, Crystal aquatique, blue);
+	%%crystal(4, Crystal du désert, gold);
+	%%crystal(5, Crystal végétal, green);
+	%%crystal(6, Crystal vert, green);
+	%%crystal(7, Crystal de feu, red);
+	%%crystal(8, Crystal structurel, light_purple);
+	%%crystal(9, Crystal dimensionnel, light_purple);
+	%%crystal(10, Crystal rotatif, red);
+	%%crystal(11, Crystal de pierre, gray);
+	%%crystal(12, Crystal solaire, yellow);
+	
+	%%colorableCrystal(260434);
+	%%colorableCrystal(260435);
+	%%colorableCrystal(260436);
+}
+
+define give_foods{
+	# EATABLE #
+	%%item(minecraft:baked_potato, 1, Orange);
+	%%item(minecraft:baked_potato, 2, Cerises);
+	%%item(minecraft:baked_potato, 5, Citron);
+	%%item(minecraft:baked_potato, 6, Tomate);
+	%%item(minecraft:baked_potato, 7, Raisin Noir);
+	%%item(minecraft:baked_potato, 8, Raisin Blanc);
+	%%item(minecraft:baked_potato, 9, Radis);
+	%%item(minecraft:baked_potato, 9, Myrtille);
+	
+	# DRINKABLE IN BOWL #
+	%%item(minecraft:mushroom_stew, 1, Soupe aux légumes);
+	%%item(minecraft:mushroom_stew, 2, Soupe aux carottes);
+	%%item(minecraft:mushroom_stew, 3, Soupe de morue);
+	%%item(minecraft:mushroom_stew, 4, Soupe de patate);
+	%%item(minecraft:mushroom_stew, 5, Soupe de tomate);
+	
+	# EATABLE IN BOWL #
+	%%item(minecraft:rabbit_stew, 1, Bol de pâtes);
+	%%item(minecraft:rabbit_stew, 2, Bol de riz);
+	%%item(minecraft:rabbit_stew, 3, Bol de riz épicé);
+	%%item(minecraft:rabbit_stew, 4, Bol de bolognaise);
+	
+	# DRINKABLE #
+	# vin #
+	give @s minecraft:potion{
+		display:{Name:'{"text":"Vin rouge","italic":"false"}'},
+		CustomPotionColor:6881280,
+		CustomModelData:260402,
+		CustomPotionEffects: [ %%effect(%%effect/strength,1200.0d,0b), %%effect(%%effect/nausea,1200.0d,3b) ]
+	};
+	give @s minecraft:potion{
+		display:{Name:'{"text":"Vin blanc","italic":"false"}'},
+		CustomPotionColor:16769162,
+		CustomModelData:260402,
+		CustomPotionEffects: [ %%effect(%%effect/resistance,600.0d,0b), %%effect(%%effect/nausea,1200.0d,3b) ]
+	};
+	give @s minecraft:potion{
+		display:{Name:'{"text":"Rosé","italic":"false"}'},
+		CustomPotionColor:16740262,
+		CustomModelData:260402,
+		CustomPotionEffects: [
+			%%effect(%%effect/resistance,600.0d,0b),
+			%%effect(%%effect/strength,600.0d,0b),
+			%%effect(%%effect/nausea,1800.0d,7b),
+			%%effect(%%effect/hunger,600.0d,0b)
+		]
+	};
+		
+	# jus #
+	give @s minecraft:potion{
+		display:{Name:%%text(Jus d\'orange)},
+		CustomPotionColor:16741120,
+		CustomModelData:260401,
+		CustomPotionEffects: [%%effect(%%effect/saturation,0.0d,4b)]
+	};
+}
+
+define give_scrolls{
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:13915937, Name:%%text(Parchemin de Feu)}, Enchantments:[{lvl:6b,id:"minecraft:fire_aspect"}]};
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:11528664, Name:%%text(Parchemin de Vent)}, Enchantments:[{lvl:4b,id:"minecraft:knockback"}]};
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:8439583, Name:%%text(Parchemin de Chance)}, Enchantments:[{lvl:4b,id:"minecraft:looting"}]};
+
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:3847130, Name:%%text(Parchemin de Vitesse)}, AttributeModifiers:[%%attribute(scroll_speed,generic.movement_speed,1,1.0,offhand)],Enchantments:[{}]};
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:13268079, Name:%%text(Parchemin de Force)}, AttributeModifiers:[%%attribute(scroll_damage,generic.attack_damage,1,0.2,offhand)],Enchantments:[{}]};
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:15961002, Name:%%text(Parchemin de Vitalité)}, AttributeModifiers:[%%attribute(scroll_health,generic.max_health,1,0.5,offhand)],Enchantments:[{}]};
+	give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{color:10528680, Name:%%text(Parchemin de Résistance)}, AttributeModifiers:[%%attribute(scroll_armor,generic.armor,0,4,offhand),%%attribute(scroll_toughness,generic.armor_toughness,0,2,offhand)],Enchantments:[{}]};
+}
+
+define give_wands{
+	macro wand(colormodel,name,color,tag):
+		give @s minecraft:%%colormodel{display:{Name:%%text(%%name,%%color)},EntityTag:{id:"snowball",NoGravity:1,Tags:[magic,%%tag]}};
+	
+	macro wandSummon(colormodel,name,color,entity):
+		give @s minecraft:%%colormodel{display:{Name:%%text(%%name,%%color)},EntityTag:{%%entity}};
+	# TICK #
+	%%wand(cod_spawn_egg, Bâton du Désert, gold);
+	%%wand(fox_spawn_egg, Bâton de Feu, red, fire);
+	%%wand(enderman_spawn_egg, Bâton de Chaos, dark_purple, chaos);
+	%%wand(sheep_spawn_egg, Bâton de Téléportation, light_purple, tp);
+	%%wand(slime_spawn_egg, Bâton de Nature, green, nature);
+	%%wand(spider_spawn_egg, Bâton de Destruction, red, destruction);
+	%%wand(mule_spawn_egg, Bâton d'Enterrement, dark_red, ground);
+	%%wand(bat_spawn_egg, Bâton de Ténèbre, white, dark);
+	
+	# TICK POTION #
+	%%wand(shulker_spawn_egg, Bâton Gravitationnel, light_purple, gravity);
+	%%wand(witch_spawn_egg, Bâton Empoisonné, green, poison);
+	%%wand(wandering_trader_spawn_egg, Bâton de Vision, blue, vision);
+	%%wand(elder_guardian_spawn_egg, Bâton de Lourdeur, blue, slow);
+	%%wand(drowned_spawn_egg, Bâton de Mouvement, blue, move);
+	%%wand(pig_spawn_egg, Bâton de Vie, red, life);
+	%%wand(mooshroom_spawn_egg, Bâton de Renforcement, red, battle);
+	
+	# INVOCATION #
+	%%wandSummon(magma_cube_spawn_egg, Bâton du Tonerre, gold, id:"lightning_bolt");
+	%%wandSummon(blaze_spawn_egg, Bâton de Boule de Feu, red, id:"fireball", Motion:[0.0, 0.1, 0.0]);
+	%%wandSummon(chicken_spawn_egg, Bâton d'Explosion, red, id:"tnt", Fuse:40);
+	%%wandSummon(creeper_spawn_egg, Bâton de Creeper, green, id:"creeper", ignited:1);
+	
+	# INVOCATION DE FAMILIER #
+	%%wandSummon(vex_spawn_egg, Bâton de Neige, white, id:"snow_golem");
+	%%wandSummon(polar_bear_spawn_egg, Bâton de Fer, white, id:"iron_golem", Health:6);
+	%%wandSummon(piglin_spawn_egg, Bâton de Navigation, white, id:"boat", NoGravity:1);
+
+}
+
+define give_materials{
+	macro material(model,name): %%item(minecraft:leather_horse_armor,%%model,%%name);
+		
+	%%material(260424, Charbon);
+	%%material(260425, Charbon);
+	%%material(260426, Lingot);
+	%%material(260427, Lingot);
+	%%material(260428, Pépite);
+	%%material(260429, Pépite);
+	%%material(260430, Poudre);
+	%%material(260431, Poudre);
+	%%material(260432, Pièce);
+	%%material(260433, Parchemin);
+}
+
+define give_decos{
+	macro feather(model): %%item(minecraft:feather,%%model);
+	macro hat(model,name): %%item(minecraft:leather,%%model,%%name);
+	macro hat2(model,name): %%item(minecraft:leather_horse_armor,%%model,%%name);
+	
+	%%feather(1);
+	%%feather(2);
+	%%feather(3);
+	%%feather(4);
+	%%feather(5);
+	%%feather(6);
+	%%feather(7);
+		
+	%%material(260424, Charbon);
+	%%material(260425, Charbon);
+	%%material(260426, Lingot);
+	%%material(260427, Lingot);
+	%%material(260428, Pépite);
+	%%material(260429, Pépite);
+	%%material(260430, Poudre);
+	%%material(260431, Poudre);
+	%%material(260432, Pièce);
+	%%material(260433, Parchemin);
+	
+	%%hat(1, Chapeau);
+	%%hat(2, Chapeau);
+	%%hat(3, Chapeau);
+
+	%%hat(4, Chapeau de paille);
+	%%hat(5, Chapeau de paille);
+
+	%%hat(6, Masque);
+	%%hat(7, Masque);
+	%%hat(8, Masque);
+	%%hat(9, Masque);
+	%%hat(10, Masque);
+	%%hat(11, Masque);
+	%%hat(12, Masque);
+	%%hat(13, Masque);
+	
+	%%hat2(260416, Chapeau Magique);
+	%%hat2(260417, Chapeau Simple);
+	%%hat2(260418, Chapeau Haut);
+	%%hat2(260419, Chapeau Melon);
+	%%hat2(260420, Casquette);
+	%%hat2(260421, Chapeau Bordé);
+	%%hat2(260422, Chapeau Pirate);
+	%%hat2(260423, Chapeau Paris Beau);
+}

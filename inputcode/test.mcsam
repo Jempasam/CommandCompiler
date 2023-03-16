@@ -1,0 +1,7 @@
+use controls;
+
+define main{
+	%%%if(if block ~ ~ ~ air) do{
+		say hey;
+	}
+}

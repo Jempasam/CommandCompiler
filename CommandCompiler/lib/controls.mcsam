@@ -1,0 +1,11 @@
+macro if(condition,code){	
+	execute if %%condition run function define{
+		%%code;
+	};
+}
+
+macro unless(condition,code){	
+	execute unless %%condition run function define{
+		%%code;
+	};
+}

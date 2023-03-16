@@ -1,0 +1,40 @@
+
+namespace effect{
+	const speed{ 1 }
+	const slowness{ 2 }
+	const haste{ 3 }
+	const mining_fatigue{ 4 }
+	const strength{ 5 }
+	const instant_health{ 6 }
+	const instant_damage{ 7 }
+	const jump_boost{ 8 }
+	const nausea{ 9 }
+	const regeneration{ 10 }
+	const resistance{ 11 }
+	const fire_resistance{ 12 }
+	const water_breathing{ 13 }
+	const invisibility{ 14 }
+	const blindness{ 15 }
+	const night_vision{ 16 }
+	const hunger{ 17 }
+	const weakness{ 18 }
+	const poison{ 19 }
+	const wither{ 20 }
+	const health_boost{ 21 }
+	const absorption{ 22 }
+	const saturation{ 23 }
+	const glowing{ 24 }
+	const levitation{ 25 }
+	const luck{ 26 }
+	const unluck{ 27 }
+	const slow_falling{ 28 }
+	const conduit_power{ 29 }
+	const dolphins_grace{ 30 }
+	const bad_omen{ 31 }
+	const hero_of_the_village‌{ 32 }
+	const darkness{ 33 }
+}
+
+macro effect(id,duration,amplifier){ {Duration: %%duration, Id: %%id, Amplifier: %%amplifier} }
+macro effect(id,duration){ {Duration: %%duration, Id: %%id, Amplifier: 0} }
+macro effect(id){ {Duration: 1200, Id: %%id, Amplifier: 0} }

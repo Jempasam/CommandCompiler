@@ -1,0 +1,11 @@
+src: src
+bin: bin
+namespace: wand
+
+give_stuff: weapon
+weapon: standard
+standard:
+objects: standard
+treat_magic:
+main: treat_magic give_stuff
+stands: standard

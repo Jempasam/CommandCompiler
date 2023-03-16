@@ -1,0 +1,104 @@
+import pord;
+import jean/prout/pass0l;
+
+define effect(
+	macro iftype(name): execute if entity @s[tag=%%name];
+	
+	%%rand;
+	
+	# EFFECT #
+	%%iftype(gravity;) run effect give @e[distance=..3] minecraft:levitation 10 0;
+	
+	%%iftype(poison;) run function define poison(
+		effect give @e[distance=..3] minecraft:poison 10 0;
+		particle minecraft:falling_dust emerald_block ~ ~ ~ 1.5 1.5 1.5 0 100;
+	);
+
+	%%iftype(vision;) run effect give @e[distance=..40] minecraft:glowing 10 0;
+	
+	%%iftype(battle;) run particle minecraft:wax_off ~ ~ ~ 1.5 1.5 1.5 0 100;
+	
+	%%iftype(slow;) run function define slow(
+		effect give @e[distance=..3] minecraft:slowness 15 4;
+		particle minecraft:falling_dust stone ~ ~ ~ 1.5 1.5 1.5 0 100;
+	);
+
+	%%iftype(move;) run function define move(
+		effect give @e[distance=..3] minecraft:speed 40 1;
+		effect give @e[distance=..3] minecraft:jump_boost 40 1;
+		particle minecraft:happy_villager ~ ~ ~ 1.5 1.5 1.5 0 100;
+	);
+	
+	%%iftype(life;) run function define life(
+		effect give @e[distance=..3] minecraft:regeneration 8 2;
+		particle minecraft:heart ~ ~ ~ 1.5 1.5 1.5 0 100;
+	);
+
+	%%iftype(battle;) run function define battle(
+		effect give @e[distance=..3] minecraft:resistance 30 0;
+		effect give @e[distance=..3] minecraft:strength 30 0;
+		particle minecraft:wax_on ~ ~ ~ 1.5 1.5 1.5 0 100;
+	);
+
+	%%iftype(dark;) run function define dark(
+		effect give @e[distance=..3] minecraft:blindness 30 0;
+		particle minecraft:campfire_cosy_smoke ~ ~ ~ 1.5 1.5 1.5 0 100;
+	);
+
+	%%iftype(nature;) run function define grow(
+		execute if block ~-1 ~ ~ #minecraft:dirt run fill ~ ~ ~ ~3 ~ ~ minecraft:oak_wood keep;
+		execute if block ~1 ~ ~ #minecraft:dirt run fill ~-3 ~ ~ ~ ~ ~ minecraft:oak_wood keep;
+
+		execute if block ~ ~ ~-1 #minecraft:dirt run fill ~ ~ ~ ~ ~ ~3 minecraft:oak_wood keep;
+		execute if block ~ ~ ~1 #minecraft:dirt run fill ~ ~ ~ ~ ~ ~-3 minecraft:oak_wood keep;
+
+		execute if block ~ ~-1 ~ #minecraft:dirt run fill ~ ~ ~ ~ ~3 ~ minecraft:oak_wood keep;
+		execute if block ~ ~1 ~ #minecraft:dirt run fill ~ ~ ~ ~ ~-3 ~ minecraft:oak_wood keep;
+
+
+		execute if block ~-1 ~ ~ #minecraft:oak_logs run fill ~ ~ ~ ~3 ~ ~ minecraft:oak_leaves keep;
+		execute if block ~1 ~ ~ #minecraft:oak_logs run fill ~-3 ~ ~ ~ ~ ~ minecraft:oak_leaves keep;
+
+		execute if block ~ ~ ~-1 #minecraft:oak_logs run fill ~ ~ ~ ~ ~ ~3 minecraft:oak_leaves keep;
+		execute if block ~ ~ ~1 #minecraft:oak_logs run fill ~ ~ ~ ~ ~ ~-3 minecraft:oak_leaves keep;
+
+		execute if block ~ ~-1 ~ #minecraft:oak_logs run fill ~ ~ ~ ~ ~3 ~ minecraft:oak_leaves keep;
+		execute if block ~ ~1 ~ #minecraft:oak_logs run fill ~ ~ ~ ~ ~-3 ~ minecraft:oak_leaves keep;
+
+
+		execute if block ~-1 ~ ~ minecraft:oak_leaves run fill ~ ~ ~ ~3 ~ ~ minecraft:birch_leaves keep;
+		execute if block ~1 ~ ~ minecraft:oak_leaves run fill ~-3 ~ ~ ~ ~ ~ minecraft:birch_leaves keep;
+
+		execute if block ~ ~ ~-1 minecraft:oak_leaves run fill ~ ~ ~ ~ ~ ~3 minecraft:birch_leaves keep;
+		execute if block ~ ~ ~1 minecraft:oak_leaves run fill ~ ~ ~ ~ ~ ~-3 minecraft:birch_leaves keep;
+
+		execute if block ~ ~-1 ~ minecraft:oak_leaves run fill ~ ~ ~ ~ ~3 ~ minecraft:birch_leaves keep;
+		execute if block ~ ~1 ~ minecraft:oak_leaves run fill ~ ~ ~ ~ ~-3 ~ minecraft:birch_leaves keep;
+	);
+
+	%%iftype(chaos;) run spreadplayers ~ ~ 0 10 false @e[distance=..3];
+	
+	%%iftype(ground;) as @e[distance=..3] at @s run tp ~ ~-1 ~;
+	
+	%%iftype(tp;) run tp @e[distance=..5] ~ ~ ~;
+
+	%%iftype(sand;) run function define sand(
+		execute at @e[distance=..3] run fill ~ ~ ~ ~ ~1 ~ sand keep;
+		particle minecraft:falling_dust sand ~ ~ ~ 1.5 1.5 1.5 0 20;
+	);
+
+	%%iftype(fire;) run function define fire(
+		execute at @e[distance=..3] run setblock ~ ~ ~ fire keep;
+		particle minecraft:block_marker fire ~ ~ ~ 1.5 1.5 1.5 0 20;
+	);
+	
+	%%iftype(destruction;) run function define destruction(
+		summon minecraft:bat ~ ~ ~ {Passengers:[{id:"tnt",Fuse:100}]};
+		summon minecraft:bat ~ ~ ~ {Passengers:[{id:"tnt",Fuse:100}]};
+		summon minecraft:bat ~ ~ ~ {Passengers:[{id:"tnt",Fuse:100}]};
+		summon minecraft:bat ~ ~ ~ {Passengers:[{id:"tnt",Fuse:100}]};
+		particle minecraft:poof ~ ~ ~ 0.5 0.5 0.5 0.1 20;
+	);
+
+	function wand:treat_magic_skyland_compat;
+)

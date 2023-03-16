@@ -1,0 +1,3 @@
+macro textItalic(text,color){ '{"text":"%%text","italic":"true","color":"%%color"}' }
+macro text(text,color){ '{"text":"%%text","italic":"false","color":"%%color"}' }
+macro text(text){ '{"text":"%%text","italic":"false"}' }

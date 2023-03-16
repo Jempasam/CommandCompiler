@@ -1,0 +1,1 @@
+ setblock ~ ~ ~ fire summon minecraft : creeper ~ ~1 ~ execute if entity @e[type=minecraft : creeper] run functionmaket:fire_0

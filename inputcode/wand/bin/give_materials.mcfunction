@@ -1,0 +1,10 @@
+give @s minecraft:leather_horse_armor{CustomModelData:260424,display:{Name:'{"text":"Charbon"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260425,display:{Name:'{"text":"Charbon"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260426,display:{Name:'{"text":"Lingot"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260427,display:{Name:'{"text":"Lingot"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260428,display:{Name:'{"text":"Pépite"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260429,display:{Name:'{"text":"Pépite"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260430,display:{Name:'{"text":"Poudre"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260431,display:{Name:'{"text":"Poudre"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260432,display:{Name:'{"text":"Pièce"}'}}
+give @s minecraft:leather_horse_armor{CustomModelData:260433,display:{Name:'{"text":"Parchemin"}'}}

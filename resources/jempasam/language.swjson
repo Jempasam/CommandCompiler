@@ -1,0 +1,382 @@
+predicates:{
+	variableName: "^[a-zA-Z_][a-zA-Z_0-9]*$",
+	functionName: "^[a-zA-Z_][a-zA-Z_0-9]*$",
+	memberAccessName: "^([a-zA-Z_0-9]\:)?[a-zA-Z_0-9\/]+$",
+	namespacePath: "^[a-zA-Z_0-9\/]+$",
+},
+
+tokens:{
+	reexit:{
+		then: { tester:ANY, mover:EXIT, writer:EXIT },
+	},
+	
+	reexit2:{
+		then: { tester:ANY, mover:{to:reexit,giveToken:true}, writer:EXIT },
+	},
+	
+	multilineCode:{},
+	onelineCode:{},
+	instructionPatchToken:{},
+	codeLine:{},
+	codeContainer:{
+		then: { tester:"^\{$", mover:{in:multilineCode}, writer:{code:{}} },
+		then: { tester:"^\:$", mover:{in:codeLine}, writer:{code:{}} },
+	},
+	
+	macroToken:{},
+	macroContainer:{
+		then: { tester:"^macro$", mover:{in:macroToken}, writer:{macro:{}} },
+	},
+	
+	functionToken:{},
+	functionContainer:{
+		then: { tester:"^define$", mover:{in:functionToken}, writer:{function:{}} },
+	},
+	
+	importToken:{},
+	importContainer:{
+		then: { tester:"^import$", mover:{in:importToken}, writer:{import:{}} },
+	},
+	
+	useToken:{},
+	useContainer:{
+		then: { tester:"^use$", mover:{in:useToken}, writer:{use:{}} },
+	},
+	
+	usingToken:{},
+	usingContainer:{
+		then: { tester:"^using$", mover:{in:usingToken}, writer:{using:{}} },
+	},
+	
+	constToken:{},
+	constContainer:{
+		then: { tester:"^const$", mover:{in:constToken}, writer:{const:{}} },
+	},
+	
+	namespaceToken:{},
+	namespaceContainer:{
+		then: { tester:"^namespace$", mover:{in:namespaceToken}, writer:{namespace:{}} },
+	},
+	
+	parameters:{},
+	
+	# MACROS #
+		# PARAMETERS #
+			macroCloseParameter:{},
+			macroParameterSeparator:{},
+			macroParameterName:{},
+			macroOpenParameter:{},
+			
+			macroCloseParameter:{
+				then: { tester:"^\{$", mover:{to:reexit,in:multilineCode}, writer:{code:{}} },
+				then: { tester:"^\:$", mover:{to:reexit,in:onelineCode}, writer:{code:{}} },
+			},
+			
+			macroParameterSeparator:{
+				then: { tester:"^\)$", mover:{to:macroCloseParameter}, writer:EXIT },
+				then: { tester:variableName, mover:{to:macroParameterName}, writer:{TOKEN} },
+			},
+			
+			macroParameterName:{
+				then: { tester:"^\)$", mover:{to:macroCloseParameter}, writer:EXIT },
+				then: { tester:"^\,$", mover:{to:macroParameterSeparator}, writer:IGNORE },
+			},
+			
+			macroParameterReferenceToken:{
+				then: { tester:variableName, mover:{to:macroParameterName}, writer:{reference:TOKEN} },
+			},
+			
+			macroOpenParameter:{
+				then: { tester:"^\)$", mover:{to:macroCloseParameter}, writer:EXIT },
+				then: { tester:"^\&$", mover:{to:macroParameterReferenceToken}, writer:IGNORE },
+				then: { tester:variableName, mover:{to:macroParameterName}, writer:{TOKEN} },
+			},
+		# #
+		
+		macroName:{
+			then: { tester:"^\($", mover:{to:macroOpenParameter}, writer:{parameters:{}} },
+			then: { tester:"^\{$", mover:{to:reexit,in:multilineCode}, writer:{parameters:{},code:{}} },
+			then: { tester:"^\:$", mover:{to:reexit,in:onelineCode}, writer:{parameters:{},code:{}} },
+		},
+		
+		macroToken:{
+			then: { tester:functionName, mover:{to:macroName}, writer:{name:TOKEN} },
+		},
+	# #
+
+
+	# FUNCTIONS #
+		functionBeforeCode:{
+			then: { tester:"^\{$", mover:{to:reexit,in:multilineCode}, writer:{code:{}} },
+			then: { tester:"^\:$", mover:{to:reexit,in:codeLine}, writer:{code:{}} },
+		},
+		
+		functionInName:{
+			include: functionBeforeCode,
+		},
+		
+		functionInToken:{
+			then: { tester:namespacePath, mover:{to:functionInName}, writer:{in:TOKEN} },
+		},
+		
+		functionName:{
+			include: functionBeforeCode,
+			then: { tester:"^in$", mover:{to:functionInToken}, writer:IGNORE },
+		},
+		
+		functionToken:{
+			include: functionName,
+			then: { tester:functionName, mover:{to:functionName}, writer:{name:TOKEN} },
+		},
+	# #
+	
+	# CODE #
+		# LINE #
+			codeLine:{},
+			multilineCode:{},
+			# FOR #
+				forLoopVarName:{
+					then: { tester:"^\{$", mover:{to:reexit,in:multilineCode}, writer:{code:{}} },
+					then: { tester:"^\:$", mover:{to:reexit,in:onelineCode}, writer:{code:{}} },
+				},
+				forLoopAsToken:{
+					then: { tester:variableName, mover:{to:forLoopVarName}, writer:{name:TOKEN} },
+				},
+				forLoopCloseParam:{
+					then: { tester:"^as$", mover:{to:forLoopAsToken}, writer:IGNORE },
+				},
+				forLoopToken:{
+					then: { tester:"^\($", mover:{to:forLoopCloseParam,in:parameters}, writer:{parameters:{}} },
+				},
+			# #
+			# PATCH #
+				codePatchSeparatorParameter:{},
+				codePatchParameterValueEnd:{},
+				codePatchOpenParameter:{},
+				
+				codePatchName:{
+					then: { tester:"^\($", mover:{to:reexit,in:parameters}, writer:{parameters:{}} },
+					then: { tester:ANY, mover:EXIT, writer:EXIT },
+				},
+				codePatch:{
+					then: { tester:"^for$", mover:{to:forLoopToken}, writer:{for:{}} },
+					then: { tester:ANY, mover:{to:codePatchName}, writer:{patch:{name:TOKEN}} },
+				},
+			# #
+			codeNBTTabInside:{},
+			codeNBTObjectInside:{},
+			codeLineInside:{},
+			codeNBTOpenable:{
+				then: { tester:"^\($", mover:{in:codeLineInside}, writer:{TOKEN} },
+				then: { tester:"^\{$", mover:{in:codeNBTObjectInside}, writer:{TOKEN} },
+				then: { tester:"^\[$", mover:{in:codeNBTTabInside}, writer:{TOKEN} },
+			},
+			codeTokenContainer:{
+				then: { tester:"^\%\%\%$", mover:{in:instructionPatchToken}, writer:{patch:{}} },
+				then: { tester:"^\%\%$", mover:{in:codePatch}, writer:IGNORE },
+				
+				include: functionContainer,
+			},
+			codeLineInsideClose:{ then: { tester:ANY, mover:EXIT, writer:IGNORE }, },
+			codeLineInside:{
+				include: codeNBTOpenable,
+				include: codeTokenContainer,
+				
+				then: { tester:"^\)$", mover:{to:codeLineInsideClose}, writer:{TOKEN} },
+				then: { tester:"^\;;$", mover:KEEP, writer:{";;"} },
+				then: { tester:"^[^\}\]\;].*$", mover:KEEP, writer:{TOKEN} },
+			},
+			codeNBTTabClose:{ then: { tester:ANY, mover:EXIT, writer:IGNORE }, },
+			codeNBTTabInside:{
+				include: codeNBTOpenable,
+				include: codeTokenContainer,
+				
+				then: { tester:"^\]$", mover:{to:codeNBTTabClose}, writer:{TOKEN} },
+				then: { tester:"^\;;$", mover:KEEP, writer:{";;"} },
+				then: { tester:"^[^\}\)\;].*$", mover:KEEP, writer:{TOKEN} },
+			},
+			codeNBTObjectClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+			codeNBTObjectInside:{
+				include: codeNBTOpenable,
+				include: codeTokenContainer,
+				
+				then: { tester:"^\}$", mover:{to:codeNBTObjectClose}, writer:{TOKEN} },
+				then: { tester:"^\;;$", mover:KEEP, writer:{";;"} },
+				then: { tester:"^[^\)\]\;].*$", mover:KEEP, writer:{TOKEN} },
+			},
+			codeLineClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+			codeLine:{
+				include: codeNBTOpenable,
+				
+				then: { tester:"^\($", mover:{in:codeLineInside}, writer:{TOKEN} },
+				then: { tester:"^\}$", mover:EXIT, writer:IGNORE },
+				then: { tester:"^\;$", mover:{to:codeLineClose}, writer:{TOKEN} },
+				include: codeTokenContainer,
+				then: { tester:"^\;;$", mover:KEEP, writer:{";;"} },
+				then: { tester:"^[^\}].*$", mover:KEEP, writer:{TOKEN} },
+			},
+		# #
+		
+		# INSTRUCTION PATCH #
+			instructionParamSeparator:{},
+			instructionPatchAfterArg:{},
+			instructionPatchAfter:{
+				then: { tester:"^\{$", mover:{to:instructionPatchAfterArg,in:multilineCode}, writer:{code:{}} },
+				then: { tester:"^\:$", mover:{to:instructionPatchAfterArg,in:onelineCode}, writer:{code:{}} },
+			},
+			instructionPatchWith:{
+				then: { tester:"^\($", mover:{to:reexit,in:parameters}, writer:IGNORE },
+			},
+			instructionPatchDo:{
+				then: { tester:"^\{$", mover:{to:reexit2,in:multilineCode}, writer:{code:{}} },
+				then: { tester:"^\:$", mover:{to:reexit2,in:onelineCode}, writer:{code:{}} },
+			},
+			instructionPatchAfterArg:{
+				then: { tester:"^do$", mover:{to:instructionPatchDo}, writer:IGNORE },
+				then: { tester:"^after$", mover:{to:instructionPatchAfter}, writer:IGNORE },
+				then: { tester:"^with$", mover:{to:instructionPatchWith}, writer:IGNORE },
+			},
+			instructionParamValue:{
+				then: { tester:"^\)$", mover:{to:instructionPatchAfterArg}, writer:IGNORE },
+				then: { tester:"^\,$", mover:{to:instructionParamSeparator}, writer:IGNORE },
+			},
+			instructionParamClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+			instructionParamSeparator:{
+				then: { tester:"^\)$", mover:{to:instructionParamClose}, writer:EXIT },
+				then: { tester:"^\{$", mover:{to:instructionParamValue,in:multilineCode}, writer:{code:{}} },
+				then: { tester:ANY, mover:{to:instructionParamValue,in:onelineCode,giveToken:true}, writer:{code:{}} },
+			},
+			instructionParamOpen:{
+				include: instructionParamSeparator,
+			},
+			instructionPatchName:{
+				then: { tester:"^\($", mover:{to:instructionParamOpen}, writer:{parameters:{}} },
+				then: { tester:"^do$", mover:{to:instructionPatchDo}, writer:{parameters:{}} },
+				then: { tester:"^after$", mover:{to:instructionPatchAfter}, writer:{parameters:{}} },
+				then: { tester:"^with$", mover:{to:instructionPatchWith}, writer:{parameters:{}} },
+			},
+			instructionPatchToken:{
+				then: { tester:variableName, mover:{to:instructionPatchName}, writer:{name:TOKEN} },
+			},
+		# #
+		
+		# MULTILINE #
+			multilineCodeClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+			multilineCode:{
+				then: { tester:"^macro$", mover:{in:macroToken}, writer:{macro:{}} },
+				then: { tester:"^const$", mover:{in:constToken}, writer:{const:{}} },
+				then: { tester:"^\}$", mover:{to:multilineCodeClose}, writer:EXIT },
+				then: { tester:ANY, mover:{in:codeLine,giveToken:true}, writer:IGNORE },
+			},
+			onelineCodeClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+			onelineCode:{
+				include: codeNBTOpenable,
+				
+				then: { tester:"^\($", mover:{in:codeLineInside}, writer:{TOKEN} },
+				then: { tester:"^\;$", mover:{to:onelineCodeClose}, writer:{";"} },
+				then: { tester:"^\,$", mover:EXIT, writer:EXIT },
+				then: { tester:"^\)$", mover:EXIT, writer:EXIT },
+				include: codeTokenContainer,
+				then: { tester:"^\;;$", mover:KEEP, writer:{";;"} },
+				then: { tester:ANY, mover:KEEP, writer:{TOKEN} },
+			},
+		# #
+		
+		# PARAMETERS / CODE TABLE #
+			parametersClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+			parametersAfterValue:{},
+			parametersSeparator:{
+				then: { tester:"^\)$", mover:{to:parametersClose}, writer:EXIT },
+				then: { tester:"^\{$", mover:{to:parametersAfterValue,in:multilineCode}, writer:{code:{}} },
+				then: { tester:ANY, mover:{to:parametersAfterValue,in:onelineCode,giveToken:true}, writer:{code:{}} },
+			},
+			parametersAfterValue:{
+				then: { tester:"^\)$", mover:{to:parametersClose}, writer:EXIT },
+				then: { tester:"^\,$", mover:{to:parametersSeparator}, writer:IGNORE },
+			},
+			parameters:{
+				include: parametersSeparator,
+			},
+		# #
+	# #
+
+	rootStatementClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+	# IMPORT #
+		importPath:{
+			then: { tester:"^\;$", mover:{to:rootStatementClose}, writer:EXIT },
+		},
+		
+		importToken:{
+			then: { tester:memberAccessName, mover:{to:importPath}, writer:{path:TOKEN} },
+		},
+	# #
+	
+	
+	# USE #
+		usePath:{
+			then: { tester:"^\;$", mover:{to:rootStatementClose}, writer:EXIT },
+		},
+		
+		useToken:{
+			then: { tester:memberAccessName, mover:{to:usePath}, writer:{path:TOKEN} },
+		},
+	# #
+	
+	# USING #
+		usingPath:{
+			then: { tester:"^\;$", mover:{to:rootStatementClose}, writer:EXIT },
+		},
+		
+		usingToken:{
+			then: { tester:memberAccessName, mover:{to:usingPath}, writer:{path:TOKEN} },
+		},
+	# #
+
+
+	# CONSTANTES #
+		constName:{
+			then: { tester:"^\{$", mover:{to:reexit,in:multilineCode}, writer:{code:{}} },
+			then: { tester:"^\:$", mover:{to:reexit,in:onelineCode}, writer:{code:{}} },
+		},
+		
+		constToken:{
+			then: { tester:variableName, mover:{to:constName}, writer:{name:TOKEN} },
+		},
+	# #
+	
+
+	# NAMESPACE #
+		namespaceClose:{then: { tester:ANY, mover:EXIT, writer:IGNORE }},
+		namespaceInside:{
+			then: { tester:"^\}$", mover:{to:namespaceClose}, writer:EXIT },
+			include: functionContainer,
+			include: macroContainer,
+			include: importContainer,
+			include: constContainer,
+			include: namespaceContainer,
+		},
+		
+		namespaceName:{
+			then: { tester:"^\{$", mover:{to:namespaceInside}, writer:IGNORE },
+		},
+		
+		namespaceToken:{
+			then: { tester:namespacePath, mover:{to:namespaceName}, writer:{name:TOKEN} },
+		},
+	# #
+
+	linestart:{
+		then: { tester:END_OF_FILE, mover:KEEP, writer:IGNORE },
+		include: functionContainer,
+		include: macroContainer,
+		include: importContainer,
+		include: useContainer,
+		include: constContainer,
+		include: namespaceContainer,
+		include: usingContainer,
+	},
+
+	filestart:{
+		include: linestart,
+	},
+}

@@ -1,0 +1,1 @@
+execute if if block ~ ~ ~ air run function wand:main/8f9ce8

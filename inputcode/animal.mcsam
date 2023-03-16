@@ -1,0 +1,3 @@
+macro summon(mob): summon %%mob ~ ~ ~;
+macro summon(mob,name): summon %%mob ~ ~ ~ {CustomName:"%%name",CustomNameVisible:1b};
+macro summon(mob,name,tags): summon %%mob ~ ~ ~ {CustomName:"%%name",CustomNameVisible:1b,%%tags};

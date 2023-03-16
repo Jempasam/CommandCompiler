@@ -1,0 +1,1 @@
+macro uuid{ [I;;%%rand,%%rand,%%rand,%%rand] }

@@ -1,0 +1,51 @@
+import standard;
+
+define give_objects{
+	macro object(model,name,color): %%item(minecraft:oak_planks, %%model, %%name, %%color);
+	
+	# BARREL #
+	%%object(260401, Wood Barrel, white);
+	%%object(260402, Old Barrel, white);
+	%%object(260403, Dark Barrel, white);
+	%%object(260404, Metal Barrel, white);
+	
+	# TABLE #
+	%%object(260405, Wood Table, green);
+	%%object(260406, Old Table, green);
+	%%object(260407, Glass Table, green);
+	%%object(260408, Metal Table, green);
+	%%object(260409, Copper Table, green);
+	%%object(260410, Garden Table, green);
+	
+	# SHELF #
+	%%object(260411, Old Shelf, blue);
+	%%object(260412, Glass Shelf, blue);
+	%%object(260413, Wood Shelf, blue);
+	
+	# CHAIR #
+	%%object(260414, Wood Chair, red);
+	%%object(260415, Old Chair, red);
+	%%object(260416, Glass Chair, red);
+	%%object(260417, Metal Chair, red);
+	%%object(260418, Copper Chair, red);
+	%%object(260419, Garden Chair, red);
+	
+	give @s minecraft:command_block{CustomModelData:260457,BlockEntityTag:{auto:1b,Command:"function define rotate{
+		setblock ~ ~ ~ air;
+		execute as @e[tag=object,distance=..2,limit=1,sort=nearest] at @s rotated as @s rotated ~45 ~ run tp ~ ~ ~;
+	}"},display:{Name:'{"text":"Rotate Object","italic":0,"color":"gold"}'}};
+
+	give @s minecraft:command_block{CustomModelData:260411,BlockEntityTag:{auto:1b,Command:"function define summon{
+		setblock ~ ~ ~ air;
+		tag @e[tag=object] remove last;
+		summon minecraft:armor_stand ~ ~ ~ {Small:0b,ArmorItems:[{},{},{},{}],ArmorDropChance:[0.0,0.0,0.0,0.0],Invisible:1b,Invulnerable:0b,Tags:[object,last]};
+		execute rotated as @s rotated ~ 0 run tp @e[tag=last,tag=object] ~ ~ ~ ~ ~;
+		data modify entity @e[tag=last,tag=object,limit=1] ArmorItems[3] set from entity @a[sort=nearest,limit=1] Inventory[{Slot:-106b}];
+	}"},display:{Name:'{"text":"Summon Object","italic":0,"color":"green"}'}};
+
+	give @s minecraft:command_block{CustomModelData:260412,BlockEntityTag:{auto:1b,Command:"function define remove{
+		setblock ~ ~ ~ air;
+		execute at @e[tag=object,distance=..2,limit=1,sort=nearest] run particle minecraft:large_smoke ~ ~0.5 ~ 0.2 0.5 0.2 0.1 30;
+		kill @e[tag=object,distance=..2,limit=1,sort=nearest];
+	}"},display:{Name:'{"text":"Remove Object","italic":0,"color":"red"}'}};
+}

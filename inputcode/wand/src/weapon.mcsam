@@ -1,0 +1,58 @@
+import standard;
+
+macro weapon(item,model,name,attaque1,attaque2,speed1,speed2,mspeed1,mspeed2):
+	give @s %%item{
+		HideFlags:2,
+		display:{
+			Name:%%text(%%name),
+			Lore:[
+				%%text(Dans la main principale :, gray, false), 
+				%%text(%%attaque1 de point d\'attaque, dark_green, false), 
+				%%text(%%speed1 de vitesse d\'attaque, dark_green, false), 
+				%%text(%%mspeed1 de vitesse de mouvement, blue, false)
+			]
+		},
+		CustomModelData:%%model,
+		AttributeModifiers:[
+			%%attribute(weapon_aspeed, generic.attack_speed, 0, %%speed2, mainhand),
+			%%attribute(weapon_damage, generic.attack_damage, 0, %%attaque2, mainhand),
+			%%attribute(weapon_mspeed, generic.movement_speed, 1, %%mspeed2, mainhand)
+		]
+	};
+
+macro weaponEnchanted(item,model,name,attaque1,attaque2,speed1,speed2,enchname,enchlevel):
+	give @s %%item{
+		HideFlags:2,
+		display:{
+			Name:%%text(%%name),
+			Lore:[
+				%%text(Dans la main principale :, gray, false),
+				%%text(%%attaque1 de point d\'attaque, dark_green, false),
+				%%text(%%speed1 de vitesse d\'attaque, dark_green, false)
+			]
+		},
+		CustomModelData:%%model,
+		AttributeModifiers:[
+			%%attribute(weapon_aspeed, generic.attack_speed, 0, %%speed2, mainhand),
+			%%attribute(weapon_damage, generic.attack_damage, 0, %%attaque2, mainhand)
+		],
+		Enchantments:[{lvl:%%enchlevel,id:"%%enchname"}]
+	};
+
+macro weapon(item,model,name,attaque1,attaque2,speed1,speed2):
+	give @s %%item{
+		HideFlags:2,
+		display:{
+			Name:%%text(%%name),
+			Lore:[
+				%%text(Dans la main principale :,gray,false),
+				%%text(%%attaque1 de point d\'attaque,dark_green,false),
+				%%text(%%speed1 de vitesse d\'attaque,dark_green,false)
+			]
+		},
+		CustomModelData:%%model,
+		AttributeModifiers:[
+			%%attribute(weapon_aspeed, generic.attack_speed, 0, %%speed2, mainhand),
+			%%attribute(weapon_damage, generic.attack_damage, 0, %%attaque2, mainhand)
+		]
+	};

@@ -1,0 +1,17 @@
+namespace schedule{
+
+	macro repeat(test,time,code){
+		execute %%test run function define{
+			%%code;
+			execute %%test run schedule function %%this %%time replace;
+		};
+	}
+
+	macro repeat(time,code){
+		function define{
+			%%code;
+			schedule function %%this %%time replace;
+		};
+	}
+	
+}

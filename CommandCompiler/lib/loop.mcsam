@@ -1,0 +1,29 @@
+macro while(test,code){
+	execute %%test run function define{
+		%%code;
+		execute %%test function %%this;
+	};
+}
+
+macro doWhile(test,code){
+	function define{
+		%%code;
+		execute %%test function %%this;
+	};
+}
+
+macro for(init,test,up,code){
+	%%init;
+	execute %%test run function define{
+		%%code;
+		%%up;
+		execute %%test function %%this;
+	};
+}
+
+macro while(test,code){
+	execute %%test run function define{
+		%%code;
+		execute %%test function %%this;
+	};
+}

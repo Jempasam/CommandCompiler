@@ -1,0 +1,51 @@
+macro bossbar(name): bossbar add %%namespace:%%name {"text":"%%name"};
+
+macro bossbar(name,text,max,style,color){
+	%%bossbar(%%name);
+	%%bossbar/rawName(%%name,%%text);
+	%%bossbar/max(%%name,%%max);
+	%%bossbar/style(%%name,%%style);
+	%%bossbar/color(%%name,%%color);
+}
+
+
+
+namespace bossbar{
+	# SET #
+	macro color(name,color): bossbar set %%namespace:%%name color %%blue;
+	
+	macro rawName(name,complexe): bossbar set %%namespace:%%name name %%complexe;
+	macro name(name,simple): bossbar set %%namespace:%%name name %%simple;
+	macro name(name,simple,color): bossbar set %%namespace:%%name name {"text":"%%simple","color":"%%color"};
+	
+	macro max(name,maxvalue): bossbar set %%namespace:%%name max %%maxvalue;
+	macro value(name,value): bossbar set %%namespace:%%name value %%value;
+	
+	macro style(name,style): bossbar set %%namespace:%%name style %%style;
+	
+	macro players(name,selector): bossbar set %%namespace:%%name players %%selector;
+	
+	macro visibility(name,visibility): bossbar set %%namespace:%%name %%visibility;
+	macro visible(name): %%bossbar/visibility(%%name,true);
+	macro invisible(name): %%bossbar/visibility(%%name,false);
+	
+	macro storeValue(name){ store result bossbar %%namespace:%%name value }
+	macro storeMax(name){ store result bossbar %%namespace:%%name max }
+		
+	# GET #
+	macro value(name): bossbar get %%name value;
+	macro max(name): bossbar get %%name max;
+	macro visibility(name): bossbar get %%name visible;
+	
+	# ACTION #
+	macro remove(name): bossbar remove %%name;
+	
+	# MACRO #
+	macro show(name,players){
+		%%players(%%name,%%players);
+		%%visible(%%name);
+	}
+	macro hide(name){
+		%%invisible(%%name);
+	}
+}

@@ -1,0 +1,11 @@
+macro uuid{ [I;;%%rand,%%rand,%%rand,%%rand] }
+macro attribute(name,type,operation,amount,slot){ {AttributeName:"%%type", Name:"%%name", Amount:%%speed2, Operation:%%operation, Slot:"%%slot", UUID:%%uuid} }
+
+macro text(text,color,italic){ '{"text":"%%text","italic":"%%italic","color":"%%color"}' }
+macro text(text){ '{"text":"%%text","italic":"false"}' }
+
+macro item(id,model,name,color): give @s %%id{ CustomModelData:%%model, display:{Name:'{"text":"%%name","color":"%%color"}'} };
+macro item(id,model,name): give @s %%id{CustomModelData:%%model, display:{Name:'{"text":"%%name"}'} };
+macro item(id,model): give @s %%id{CustomModelData:%%model};
+
+macro effect(id,duration,amplifier){ {Duration: %%duration, Id: %%id, Amplifier: %%amplifier} }

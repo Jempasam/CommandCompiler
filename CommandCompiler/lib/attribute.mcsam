@@ -1,0 +1,23 @@
+use standard;
+
+# ITEM #
+namespace attr{
+	const add{ 0 }
+	const multiplyBase{ 1 }
+	const multiply{ 2 }
+}
+
+#*
+ *	operation: %%attribute/add %%attribute/multiplyBase %%attribute/multiply
+ *	slot: mainhand" "offhand" "feet" "legs" "chest" "head"
+ *#
+macro attribute(name,type,operation,amount,slot){ 
+	{
+		AttributeName:"%%type",
+		Name:"%%name",
+		Amount:%%amount,
+		Operation:%%operation,
+		Slot:"%%slot",
+		UUID:%%uuid
+	}
+}

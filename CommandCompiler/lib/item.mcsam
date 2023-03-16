@@ -1,0 +1,18 @@
+# ITEM #
+macro item(id){ {id:"%%id", Count:1b} }
+macro item(id,count){ {id:"%%id", Count:%%count} }
+macro item(id,count,tags){ {id:"%%id", Count:%%count, tag:{%%tags}} }
+
+macro customItem(id,model,name,color){ %%item(%%id,1,{ CustomModelData:%%model, display:{Name:'{"text":"%%name","color":"%%color"}'} }) }
+macro customItem(id,model,name){ %%item(%%id,1,{ CustomModelData:%%model, display:{Name:'{"text":"%%name"}'} }) }
+macro customItem(id,model){ %%item(%%id,1,{ CustomModelData:%%model }) }
+
+macro summonItem(item): summon minecraft:item ~ ~ ~ {Item:%%item};
+macro giveItem(target,item): execute at %%target run %%summonItem(%%item);
+macro putIn(pos,slot,count,item){
+	const temp{ storage %%namespace:temp %%rand };
+	data modify %%temp set value %%item;
+	data modify %%temp merge value {Slot:%%slot,Count:%%count};
+	data modify block %%pos Items append from %%temp;
+	data remove %%temp;
+}
